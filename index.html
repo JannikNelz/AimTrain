@@ -320,7 +320,6 @@
         function addScoreToLeaderboard(name, score, level) {
             const newEntry = { name, score, level };
             database.ref('leaderboard').push(newEntry);
-            fetchLeaderboard();
         }
 
         function containsBadWords(name) {
