@@ -204,7 +204,7 @@
         <select id="levelSelector">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
+            <option value=""></option>
         </select>
     </div>
 
@@ -217,7 +217,7 @@
             <div id="leaderboardButtons">
                 <button class="leaderboardButton" onclick="fetchLeaderboard('easy')">Easy</button>
                 <button class="leaderboardButton" onclick="fetchLeaderboard('medium')">Medium</button>
-                <button class="leaderboardButton" onclick="fetchLeaderboard('hard')">Hard</button>
+                <button class="leaderboardButton" onclick="fetchLeaderboard('')"></button>
             </div>
             <ul id="leaderboardList"></ul>
         </div>
@@ -302,8 +302,8 @@
                 square.style.height = '40px';
             } else if (currentLevel === 'hard') {
                 speed = 750;
-                square.style.width = '30px';
-                square.style.height = '30px';
+                square.style.width = '35px';
+                square.style.height = '35px';
             }
         });
 
