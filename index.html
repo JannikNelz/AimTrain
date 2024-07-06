@@ -14,6 +14,26 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             transition: background-color 0.5s;
+            flex-direction: column;
+        }
+        #header {
+            width: 90vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #darkModeButton, #scoreCounter, #levelSelector {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        #darkModeButton:hover, #scoreCounter:hover, #levelSelector:hover {
+            background-color: #555;
         }
         #gameContainer {
             display: flex;
@@ -41,46 +61,6 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
-        #darkModeButton {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.5s, color 0.5s;
-            z-index: 10;
-        }
-        #darkModeButton:hover {
-            background-color: #555;
-        }
-        #scoreCounter {
-            position: absolute;
-            top: 50px;
-            left: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.5s, color 0.5s;
-            z-index: 10;
-        }
-        #levelSelector {
-            position: absolute;
-            top: 90px;
-            left: 10px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 10;
         }
         #leaderboard {
             width: 30vw;
@@ -180,15 +160,18 @@
     </style>
 </head>
 <body>
+    <div id="header">
+        <button id="darkModeButton">Dark Mode</button>
+        <div id="scoreCounter">Score: 0</div>
+        <select id="levelSelector">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
     <div id="gameContainer">
         <div id="gameArea">
-            <button id="darkModeButton">Dark Mode</button>
-            <div id="scoreCounter">Score: 0</div>
-            <select id="levelSelector">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
             <div id="square"></div>
         </div>
         <div id="leaderboard">
@@ -311,7 +294,6 @@
                 const leaderboard = [];
                 snapshot.forEach((childSnapshot) => {
                     const entry = childSnapshot.val();
-                    console.log(entry); // Log each entry to check the data
                     leaderboard.unshift(entry);
                 });
                 renderLeaderboard(leaderboard);
