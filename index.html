@@ -311,6 +311,7 @@
                 const leaderboard = [];
                 snapshot.forEach((childSnapshot) => {
                     const entry = childSnapshot.val();
+                    console.log(entry); // Log each entry to check the data
                     leaderboard.unshift(entry);
                 });
                 renderLeaderboard(leaderboard);
