@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fang das Quadrat</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.5s;
+        }
+        #gameContainer {
+            display: flex;
+            justify-content: space-between;
+            width: 90vw;
+            height: 80vh;
+        }
+        #gameArea {
+            position: relative;
+            width: 60vw;
+            height: 100%;
+            background-color: white;
+            border: 2px solid #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        #square {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #darkModeButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        #darkModeButton:hover {
+            background-color: #555;
+        }
+        #scoreCounter {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        #levelSelector {
+            position: absolute;
+            top: 90px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #leaderboard {
+            width: 30vw;
+            height: 100%;
+            background-color: #fff;
+            border: 2px solid #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        #leaderboard h2 {
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        #leaderboard ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        #leaderboard li {
+            padding: 5px;
+            background-color: #f9f9f9;
+            margin: 5px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #nameInputContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        #nameInputContainer input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        #nameInputContainer button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        #nameInputContainer button:hover {
+            background-color: #555;
+        }
+        .dark-mode {
+            background-color: #333;
+        }
+        .dark-mode #gameArea, .dark-mode #leaderboard {
+            background-color: #444;
+            border-color: #ccc;
+        }
+        .dark-mode #darkModeButton,
+        .dark-mode #scoreCounter,
+        .dark-mode #leaderboard h2,
+        .dark-mode #nameInputContainer button,
+        .dark-mode #levelSelector {
+            background-color: #ccc;
+            color: #333;
+        }
+        .dark-mode #darkModeButton:hover,
+        .dark-mode #nameInputContainer button:hover {
+            background-color: #bbb;
+        }
+        .dark-mode #square {
+            background-color: #ff6347;
+        }
+        #nameInputContainer {
+            background-color: #fff;
+            border: 2px solid #000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        .dark-mode #nameInputContainer {
+            background-color: #444;
+            border-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="gameArea">
+            <button id="darkModeButton">Dark Mode</button>
+            <div id="scoreCounter">Score: 0</div>
+            <select id="levelSelector">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <div id="square"></div>
+        </div>
+        <div id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
+    </div>
+
+    <div id="nameInputContainer">
+        <input type="text" id="playerName" placeholder="Enter your name" />
+        <button id="startButton" onclick="startGame()">Start Game</button>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDybPwtKqlsAnxmmoXAKU5YlP7uPQ0Jlmc",
+            authDomain: "test-ab972.firebaseapp.com",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "test-ab972",
+            storageBucket: "test-ab972.appspot.com",
+            messagingSenderId: "24437404687",
+            appId: "1:24437404687:web:a53a9e9676680fc8399f7a"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const database = firebase.database();
+
+        const square = document.getElementById('square');
+        const gameArea = document.getElementById('gameArea');
+        const darkModeButton = document.getElementById('darkModeButton');
+        const scoreCounter = document.getElementById('scoreCounter');
+        const levelSelector = document.getElementById('levelSelector');
+        const leaderboardList = document.getElementById('leaderboardList');
+        const nameInputContainer = document.getElementById('nameInputContainer');
+        const playerNameInput = document.getElementById('playerName');
+        const startButton = document.getElementById('startButton');
+        let score = 0;
+        let darkMode = false;
+        let timeoutId;
+        let playerName = '';
+        let gameStarted = false;
+        let speed = 1000;
+        let currentLevel = 'easy';
+
+        const badWords = ["badword1", "badword2", "badword3"];
+
+        square.addEventListener('click', () => {
+            if (!gameStarted) return;
+            score++;
+            updateScore();
+            moveSquare();
+            resetTimeout();
+        });
+
+        darkModeButton.addEventListener('click', () => {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode', darkMode);
+            darkModeButton.textContent = darkMode ? 'Light Mode' : 'Dark Mode';
+        });
+
+        levelSelector.addEventListener('change', () => {
+            currentLevel = levelSelector.value;
+            if (currentLevel === 'easy') {
+                speed = 1500;
+                square.style.width = '50px';
+                square.style.height = '50px';
+            } else if (currentLevel === 'medium') {
+                speed = 1000;
+                square.style.width = '40px';
+                square.style.height = '40px';
+            } else if (currentLevel === 'hard') {
+                speed = 500;
+                square.style.width = '30px';
+                square.style.height = '30px';
+            }
+        });
+
+        function moveSquare() {
+            const maxX = gameArea.clientWidth - square.clientWidth;
+            const maxY = gameArea.clientHeight - square.clientHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            square.style.left = randomX + 'px';
+            square.style.top = randomY + 'px';
+        }
+
+        function updateScore() {
+            scoreCounter.textContent = `Score: ${score}`;
+        }
+
+        function resetTimeout() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                if (score > 0) {
+                    addScoreToLeaderboard(playerName, score, currentLevel);
+                }
+                score = 0;
+                updateScore();
+                moveSquare();
+            }, speed);
+        }
+
+        function renderLeaderboard(leaderboard) {
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${entry.name}: ${entry.score} (${entry.level})`;
+                leaderboardList.appendChild(li);
+            });
+        }
+
+        function fetchLeaderboard() {
+            database.ref('leaderboard').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+                const leaderboard = [];
+                snapshot.forEach((childSnapshot) => {
+                    const entry = childSnapshot.val();
+                    leaderboard.unshift(entry);
+                });
+                renderLeaderboard(leaderboard);
+            });
+        }
+
+        function addScoreToLeaderboard(name, score, level) {
+            const newEntry = { name, score, level };
+            database.ref('leaderboard').push(newEntry);
+            fetchLeaderboard();
+        }
+
+        function containsBadWords(name) {
+            return badWords.some(badWord => name.toLowerCase().includes(badWord));
+        }
+
+        function startGame() {
+            playerName = playerNameInput.value.trim();
+            if (playerName === '') {
+                alert('Bitte gib deinen Namen ein.');
+                return;
+            }
+            if (containsBadWords(playerName)) {
+                alert('Bitte gib einen angemessenen Namen ein.');
+                return;
+            }
+            nameInputContainer.style.display = 'none';
+            score = 0;
+            gameStarted = true;
+            updateScore();
+            moveSquare();
+            resetTimeout();
+        }
+
+        fetchLeaderboard();
+    </script>
+</body>
+</html>
