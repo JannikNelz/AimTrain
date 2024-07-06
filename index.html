@@ -306,53 +306,28 @@
 
         function renderLeaderboard(leaderboard) {
             leaderboardList.innerHTML = '';
+            leaderboard.sort((a, b) => b.score - a.score); // Sort the leaderboard by score in descending order
             leaderboard.forEach((entry, index) => {
                 const li = document.createElement('li');
-                li.textContent = `${index + 1}. ${entry.name}: ${entry.score}`;
+                li.textContent = `${index + 1}. ${entry.name}: ${entry.score} (${entry.level})`;
                 leaderboardList.appendChild(li);
             });
         }
 
         function fetchLeaderboard(level) {
             database.ref('leaderboard').orderByChild('level').equalTo(level).on('value', (snapshot) => {
-                let leaderboard = [];
+                const leaderboard = [];
                 snapshot.forEach((childSnapshot) => {
                     const entry = childSnapshot.val();
                     leaderboard.push(entry);
                 });
-                leaderboard = leaderboard.sort((a, b) => b.score - a.score);
-
-                const uniqueLeaderboard = [];
-                const names = new Set();
-                leaderboard.forEach(entry => {
-                    if (!names.has(entry.name)) {
-                        names.add(entry.name);
-                        uniqueLeaderboard.push(entry);
-                    }
-                });
-
-                renderLeaderboard(uniqueLeaderboard.slice(0, 15));
+                renderLeaderboard(leaderboard);
             });
         }
 
         function addScoreToLeaderboard(name, score, level) {
-            database.ref('leaderboard').orderByChild('name').equalTo(name).once('value', snapshot => {
-                let existingEntry = null;
-                snapshot.forEach(childSnapshot => {
-                    const entry = childSnapshot.val();
-                    if (entry.level === level) {
-                        existingEntry = { ...entry, key: childSnapshot.key };
-                    }
-                });
-
-                if (existingEntry) {
-                    if (score > existingEntry.score) {
-                        database.ref('leaderboard').child(existingEntry.key).set({ name, score, level });
-                    }
-                } else {
-                    database.ref('leaderboard').push({ name, score, level });
-                }
-            });
+            const newEntry = { name, score, level };
+            database.ref('leaderboard').push(newEntry);
         }
 
         function containsBadWords(name) {
