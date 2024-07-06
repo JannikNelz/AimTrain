@@ -96,6 +96,23 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        #leaderboardButtons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+        .leaderboardButton {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .leaderboardButton:hover {
+            background-color: #555;
+        }
         #nameInputContainer {
             position: absolute;
             top: 50%;
@@ -142,12 +159,14 @@
         .dark-mode #scoreCounter,
         .dark-mode #leaderboard h2,
         .dark-mode #nameInputContainer button,
-        .dark-mode #levelSelector {
+        .dark-mode #levelSelector,
+        .dark-mode .leaderboardButton {
             background-color: #ccc;
             color: #333;
         }
         .dark-mode #darkModeButton:hover,
-        .dark-mode #nameInputContainer button:hover {
+        .dark-mode #nameInputContainer button:hover,
+        .dark-mode .leaderboardButton:hover {
             background-color: #bbb;
         }
         .dark-mode #square {
@@ -176,6 +195,11 @@
         </div>
         <div id="leaderboard">
             <h2>Leaderboard</h2>
+            <div id="leaderboardButtons">
+                <button class="leaderboardButton" onclick="fetchLeaderboard('easy')">Easy</button>
+                <button class="leaderboardButton" onclick="fetchLeaderboard('medium')">Medium</button>
+                <button class="leaderboardButton" onclick="fetchLeaderboard('hard')">Hard</button>
+            </div>
             <ul id="leaderboardList"></ul>
         </div>
     </div>
@@ -192,13 +216,13 @@
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-          apiKey: "AIzaSyDybPwtKqlsAnxmmoXAKU5YlP7uPQ0Jlmc",
-          authDomain: "test-ab972.firebaseapp.com",
-          databaseURL: "https://test-ab972-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "test-ab972",
-          storageBucket: "test-ab972.appspot.com",
-          messagingSenderId: "24437404687",
-          appId: "1:24437404687:web:a53a9e9676680fc8399f7a"
+              apiKey: "AIzaSyDybPwtKqlsAnxmmoXAKU5YlP7uPQ0Jlmc",
+              authDomain: "test-ab972.firebaseapp.com",
+              databaseURL: "https://test-ab972-default-rtdb.europe-west1.firebasedatabase.app",
+              projectId: "test-ab972",
+              storageBucket: "test-ab972.appspot.com",
+              messagingSenderId: "24437404687",
+              appId: "1:24437404687:web:a53a9e9676680fc8399f7a"
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -289,8 +313,8 @@
             });
         }
 
-        function fetchLeaderboard() {
-            database.ref('leaderboard').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+        function fetchLeaderboard(level) {
+            database.ref('leaderboard').orderByChild('level').equalTo(level).on('value', (snapshot) => {
                 const leaderboard = [];
                 snapshot.forEach((childSnapshot) => {
                     const entry = childSnapshot.val();
@@ -329,7 +353,7 @@
 
         startButton.addEventListener('click', startGame);
 
-        fetchLeaderboard();
+        fetchLeaderboard('easy'); // Default leaderboard
     </script>
 </body>
 </html>
