@@ -11,8 +11,8 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: background-color 0.5s;
             flex-direction: column;
         }
@@ -21,16 +21,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         #darkModeButton, #scoreCounter, #levelSelector {
             padding: 10px 20px;
             background-color: #333;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.5s, color 0.5s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         #darkModeButton:hover, #scoreCounter:hover, #levelSelector:hover {
             background-color: #555;
@@ -39,8 +40,9 @@
             display: flex;
             justify-content: space-between;
             width: 90vw;
-            height: 80vh;
+            height: 70vh;
             position: relative;
+            margin-top: 20px;
         }
         #gameArea {
             position: relative;
@@ -48,8 +50,8 @@
             height: 100%;
             background-color: white;
             border: 2px solid #000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
             overflow: hidden;
             transition: background-color 0.5s, border-color 0.5s;
         }
@@ -57,8 +59,8 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background-color: red;
-            border-radius: 5px;
+            background-color: #ff6347;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -67,48 +69,52 @@
             height: 100%;
             background-color: #fff;
             border: 2px solid #000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
             overflow: hidden;
-            padding: 10px;
+            padding: 20px;
             box-sizing: border-box;
             transition: background-color 0.5s, border-color 0.5s;
-            z-index: 10;
         }
         #leaderboard h2 {
             text-align: center;
-            margin: 0;
+            margin: 0 0 20px 0;
             padding: 10px;
             background-color: #333;
             color: white;
-            border-radius: 5px;
+            border-radius: 25px;
             transition: background-color 0.5s, color 0.5s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         #leaderboard ul {
             list-style: none;
             padding: 0;
-            margin: 10px 0;
+            margin: 0;
         }
         #leaderboard li {
-            padding: 5px;
+            padding: 10px;
             background-color: #f9f9f9;
-            margin: 5px 0;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         #leaderboardButtons {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .leaderboardButton {
             padding: 10px 20px;
             background-color: #333;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.5s, color 0.5s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .leaderboardButton:hover {
             background-color: #555;
@@ -122,8 +128,8 @@
             z-index: 20;
             background-color: #fff;
             border: 2px solid #000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
             padding: 20px;
             box-sizing: border-box;
             transition: background-color 0.5s, border-color 0.5s;
@@ -131,7 +137,7 @@
         #nameInputContainer input {
             padding: 10px;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 25px;
             border: 1px solid #ccc;
             margin-bottom: 10px;
             width: 200px;
@@ -139,11 +145,13 @@
         #nameInputContainer button {
             padding: 10px 20px;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 25px;
             border: none;
             background-color: #333;
             color: white;
             cursor: pointer;
+            transition: background-color 0.5s, color 0.5s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         #nameInputContainer button:hover {
             background-color: #555;
